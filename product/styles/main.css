@@ -876,3 +876,8 @@ img, svg { display: block; max-width: 100%; }
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
 }
+
+/* Ensure hidden attribute works globally (Fix for error state flash) */
+[hidden] {
+  display: none !important;
+}
