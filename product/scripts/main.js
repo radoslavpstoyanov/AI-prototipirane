@@ -14,9 +14,11 @@ import { initForm } from './form.js';
 import { initResults } from './results.js';
 import { initSettings } from './settings.js';
 import { initHistory } from './history.js';
+import { initTheme } from './theme.js';
 
 // Initialise modules that are ready
 initForm();
 initResults();
 initSettings();
 initHistory();
+initTheme();
