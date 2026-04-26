@@ -691,3 +691,85 @@ img, svg { display: block; max-width: 100%; }
     font-size: var(--font-size-2xl);
   }
 }
+
+/* ============================================================
+   HEADER ACTIONS & MODAL (Task 03)
+   ============================================================ */
+.header-actions {
+  margin-left: auto;
+}
+
+.btn-icon-only {
+  padding: var(--space-2);
+  border-radius: 50%;
+  aspect-ratio: 1;
+}
+
+.modal {
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: transparent;
+  max-width: 500px;
+  width: calc(100% - var(--space-8));
+}
+
+.modal::backdrop {
+  background: hsl(222, 30%, 4% / 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: var(--space-1);
+}
+
+.btn-close:hover {
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   API ERROR STATE (Task 03)
+   ============================================================ */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10) var(--space-6);
+  background: hsl(354, 80%, 62% / 0.1);
+  border: 1px dashed var(--color-error);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.error-icon {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-3);
+}
+
+.error-title {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.error-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  max-width: 400px;
+}

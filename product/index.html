@@ -29,6 +29,11 @@
             <span class="logo-text">DescribeAI</span>
           </div>
           <p class="header-tagline">Продуктови описания с изкуствен интелект</p>
+          <div class="header-actions">
+            <button id="settings-btn" class="btn btn-ghost btn-icon-only" aria-label="Настройки" title="Настройки">
+              <span aria-hidden="true" style="font-size: 1.25rem;">⚙️</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -239,6 +244,14 @@
             <p class="loading-text">AI генерира описанията, моля изчакайте...</p>
           </div>
 
+          <!-- API Error state -->
+          <div id="error-state" class="error-state" hidden>
+            <div class="error-icon" aria-hidden="true">⚠️</div>
+            <h3 class="error-title">Възникна грешка</h3>
+            <p id="error-message" class="error-text">Неуспешно свързване с AI модела.</p>
+            <button id="error-retry-btn" class="btn btn-ghost btn-sm mt-3">Отвори настройки</button>
+          </div>
+
           <!-- Generated Content -->
           <div id="generated-results" class="generated-results" hidden>
             <h2 class="section-title">
@@ -296,5 +309,36 @@
     </footer>
 
     <script type="module" src="scripts/main.js"></script>
+
+    <!-- ===== SETTINGS MODAL ===== -->
+    <dialog id="settings-modal" class="modal">
+      <div class="modal-content card">
+        <div class="modal-header">
+          <h2 class="section-title" style="margin-bottom: 0; padding-bottom: 0; border: none;">Настройки</h2>
+          <button id="close-settings-btn" class="btn-close" aria-label="Затвори">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="api-key-input">
+              Google Gemini API Ключ
+            </label>
+            <input
+              id="api-key-input"
+              type="password"
+              class="form-control"
+              placeholder="AIzaSy..."
+              autocomplete="off"
+            />
+            <span class="field-hint">
+              Ключът се запазва локално във вашия браузър.
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: var(--color-accent-from);">Вземете ключ от тук</a>.
+            </span>
+          </div>
+        </div>
+        <div class="modal-footer form-actions" style="justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: var(--space-4); margin-top: var(--space-6);">
+          <button id="save-settings-btn" class="btn btn-primary">Запази</button>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
