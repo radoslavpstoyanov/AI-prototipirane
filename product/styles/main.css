@@ -519,10 +519,121 @@ img, svg { display: block; max-width: 100%; }
 }
 
 /* ============================================================
-   RESULTS SECTION PLACEHOLDER (built in Task 02)
+   RESULTS SECTION (Task 02)
    ============================================================ */
 .results-section {
-  /* Intentionally empty — will be styled in task-02 */
+  margin-top: var(--space-8);
+  animation: fade-in var(--transition-base);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  gap: var(--space-4);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent-from);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  animation: pulse-text 2s ease-in-out infinite;
+}
+
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Result Cards */
+.generated-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.result-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.result-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.result-card:hover {
+  border-color: var(--color-border-focus);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.result-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.btn-copy {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+}
+
+.result-content {
+  padding: var(--space-6);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  line-height: 1.7;
+  white-space: pre-wrap; /* Preserve line breaks */
+}
+
+/* Format unordered lists inside result blocks */
+.list-content ul {
+  padding-left: var(--space-6);
+  margin: 0;
+}
+
+.list-content li {
+  margin-bottom: var(--space-2);
+}
+
+.list-content li:last-child {
+  margin-bottom: 0;
 }
 
 /* ============================================================

@@ -230,9 +230,57 @@
           </form>
         </section>
 
-        <!-- Results section placeholder — will be built in Task 02 -->
+        <!-- ===== RESULTS SECTION (Task 02) ===== -->
         <section id="results-section" class="results-section" hidden aria-live="polite">
-          <!-- Task 02: results will be rendered here -->
+          
+          <!-- Loading state -->
+          <div id="loading-state" class="loading-state" hidden>
+            <div class="spinner" aria-hidden="true"></div>
+            <p class="loading-text">AI генерира описанията, моля изчакайте...</p>
+          </div>
+
+          <!-- Generated Content -->
+          <div id="generated-results" class="generated-results" hidden>
+            <h2 class="section-title">
+              <span class="section-icon" aria-hidden="true">✨</span>
+              Готови описания
+            </h2>
+
+            <div class="result-cards">
+              <!-- Short Description -->
+              <div class="result-card">
+                <div class="result-header">
+                  <h3 class="result-title">Кратко описание</h3>
+                  <button class="btn btn-ghost btn-copy" data-target="result-short" aria-label="Копирай краткото описание">
+                    Копирай
+                  </button>
+                </div>
+                <div id="result-short" class="result-content"></div>
+              </div>
+
+              <!-- Long Description -->
+              <div class="result-card">
+                <div class="result-header">
+                  <h3 class="result-title">Подробно описание</h3>
+                  <button class="btn btn-ghost btn-copy" data-target="result-long" aria-label="Копирай подробното описание">
+                    Копирай
+                  </button>
+                </div>
+                <div id="result-long" class="result-content"></div>
+              </div>
+
+              <!-- Key Features -->
+              <div class="result-card">
+                <div class="result-header">
+                  <h3 class="result-title">Основни акценти</h3>
+                  <button class="btn btn-ghost btn-copy" data-target="result-bullets" aria-label="Копирай основните акценти">
+                    Копирай
+                  </button>
+                </div>
+                <div id="result-bullets" class="result-content list-content"></div>
+              </div>
+            </div>
+          </div>
         </section>
 
       </div>

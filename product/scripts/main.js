@@ -11,6 +11,8 @@
  */
 
 import { initForm } from './form.js';
+import { initResults } from './results.js';
 
 // Initialise modules that are ready
 initForm();
+initResults();
