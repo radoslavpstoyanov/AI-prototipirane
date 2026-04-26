@@ -26,6 +26,8 @@ let resultLong;
 /** @type {HTMLElement} */
 let resultBullets;
 
+let currentLoadedId = null;
+
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 export function initResults() {
@@ -50,6 +52,7 @@ function _bindElements() {
 function _bindEvents() {
   document.addEventListener('product:generate', _handleGenerateEvent);
   document.addEventListener('history:load', _handleHistoryLoad);
+  document.addEventListener('history:deleted', _handleHistoryDeleted);
 
   document.querySelectorAll('.btn-copy').forEach(btn => {
     btn.addEventListener('click', _handleCopy);
@@ -61,6 +64,7 @@ function _bindEvents() {
  */
 function _handleHistoryLoad(event) {
   const item = event.detail;
+  currentLoadedId = item.id;
   
   // Make sure the main section container is visible
   resultsSection.hidden = false;
@@ -82,10 +86,26 @@ async function _handleGenerateEvent(event) {
 
   try {
     const results = await generateDescription(formData);
-    saveToHistory(formData, results); // Task 04: Save to local storage
+    const savedItem = saveToHistory(formData, results); // Task 04: Save to local storage
+    if (savedItem) {
+      currentLoadedId = savedItem.id;
+    }
     _renderResults(results);
   } catch (error) {
     _showError(error.message);
+  }
+}
+
+/**
+ * Handle deletion of a history item
+ */
+function _handleHistoryDeleted(event) {
+  const deletedId = event.detail.id;
+  
+  // If the item we just deleted is the one currently shown on the screen
+  if (deletedId === currentLoadedId) {
+    resultsSection.hidden = true;
+    currentLoadedId = null;
   }
 }
 

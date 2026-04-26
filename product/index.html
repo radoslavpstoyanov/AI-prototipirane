@@ -30,6 +30,9 @@
           </div>
           <p class="header-tagline">Продуктови описания с изкуствен интелект</p>
           <div class="header-actions">
+            <button id="theme-btn" class="btn btn-ghost btn-icon-only" aria-label="Смяна на темата" title="Смяна на темата">
+              <span id="theme-icon" aria-hidden="true" style="font-size: 1.25rem;">☀️</span>
+            </button>
             <button id="history-btn" class="btn btn-ghost btn-icon-only" aria-label="История" title="История">
               <span aria-hidden="true" style="font-size: 1.25rem;">⏱️</span>
             </button>
@@ -358,5 +361,24 @@
       </div>
     </aside>
     <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- ===== CONFIRM DELETE MODAL (Task 07) ===== -->
+    <dialog id="confirm-delete-modal" class="modal">
+      <div class="modal-content card" style="max-width: 400px;">
+        <div class="modal-header">
+          <h2 class="section-title" style="margin-bottom: 0; padding-bottom: 0; border: none; color: var(--color-error);">
+            <span aria-hidden="true" style="margin-right: var(--space-2);">🗑️</span>Изтриване
+          </h2>
+          <button id="close-confirm-btn" class="btn-close" aria-label="Затвори">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="color: var(--color-text-secondary); margin-bottom: 0;">Сигурни ли сте, че искате да изтриете този запис от историята? Това действие е необратимо.</p>
+        </div>
+        <div class="modal-footer form-actions" style="justify-content: flex-end; border-top: 1px solid var(--color-border); padding-top: var(--space-4); margin-top: var(--space-6);">
+          <button id="cancel-delete-btn" class="btn btn-ghost">Отказ</button>
+          <button id="confirm-delete-btn" class="btn btn-primary" style="background: var(--color-error); border-color: var(--color-error); color: white;">Изтрий</button>
+        </div>
+      </div>
+    </dialog>
   </body>
 </html>
