@@ -61,6 +61,10 @@ function _bindEvents() {
  */
 function _handleHistoryLoad(event) {
   const item = event.detail;
+  
+  // Make sure the main section container is visible
+  resultsSection.hidden = false;
+  
   _renderResults(item.results);
   
   // Also scroll to the results smoothly
