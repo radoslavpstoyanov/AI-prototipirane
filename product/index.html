@@ -30,6 +30,9 @@
           </div>
           <p class="header-tagline">Продуктови описания с изкуствен интелект</p>
           <div class="header-actions">
+            <button id="history-btn" class="btn btn-ghost btn-icon-only" aria-label="История" title="История">
+              <span aria-hidden="true" style="font-size: 1.25rem;">⏱️</span>
+            </button>
             <button id="settings-btn" class="btn btn-ghost btn-icon-only" aria-label="Настройки" title="Настройки">
               <span aria-hidden="true" style="font-size: 1.25rem;">⚙️</span>
             </button>
@@ -340,5 +343,20 @@
         </div>
       </div>
     </dialog>
+
+    <!-- ===== HISTORY SIDEBAR (Task 04) ===== -->
+    <aside id="history-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="section-title" style="margin-bottom: 0; padding-bottom: 0; border: none;">История</h2>
+        <button id="close-history-btn" class="btn-close" aria-label="Затвори">&times;</button>
+      </div>
+      <div class="sidebar-content">
+        <div id="history-list" class="history-list">
+          <!-- History items will be rendered here -->
+          <p class="history-empty">Все още нямате генерирани описания.</p>
+        </div>
+      </div>
+    </aside>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
   </body>
 </html>

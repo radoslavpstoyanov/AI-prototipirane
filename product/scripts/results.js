@@ -4,6 +4,7 @@
 
 import { setGenerateDisabled } from './form.js';
 import { generateDescription } from './api.js';
+import { saveToHistory } from './history.js';
 
 // ─── Module state ─────────────────────────────────────────────────────────────
 
@@ -48,10 +49,22 @@ function _bindElements() {
 
 function _bindEvents() {
   document.addEventListener('product:generate', _handleGenerateEvent);
+  document.addEventListener('history:load', _handleHistoryLoad);
 
   document.querySelectorAll('.btn-copy').forEach(btn => {
     btn.addEventListener('click', _handleCopy);
   });
+}
+
+/**
+ * Handle loading a saved result from history
+ */
+function _handleHistoryLoad(event) {
+  const item = event.detail;
+  _renderResults(item.results);
+  
+  // Also scroll to the results smoothly
+  resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /**
@@ -65,6 +78,7 @@ async function _handleGenerateEvent(event) {
 
   try {
     const results = await generateDescription(formData);
+    saveToHistory(formData, results); // Task 04: Save to local storage
     _renderResults(results);
   } catch (error) {
     _showError(error.message);
