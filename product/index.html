@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI инструмент за автоматично генериране на продуктови описания за онлайн магазини."
+    />
+    <title>AI Генератор на Продуктови Описания</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles/main.css" />
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="logo">
+            <span class="logo-icon" aria-hidden="true">✦</span>
+            <span class="logo-text">DescribeAI</span>
+          </div>
+          <p class="header-tagline">Продуктови описания с изкуствен интелект</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="app-main">
+      <div class="container">
+
+        <!-- Hero / intro -->
+        <section class="hero" aria-labelledby="hero-heading">
+          <h1 id="hero-heading" class="hero-title">
+            Генерирай убедителни<br />
+            <span class="gradient-text">продуктови описания</span>
+          </h1>
+          <p class="hero-subtitle">
+            Попълни данните за продукта и AI ще създаде кратко описание,
+            подробно описание и списък с ключови акценти — готови за
+            публикуване.
+          </p>
+        </section>
+
+        <!-- ===== INPUT FORM (Task 01) ===== -->
+        <section class="card form-section" aria-labelledby="form-heading">
+          <h2 id="form-heading" class="section-title">
+            <span class="section-icon" aria-hidden="true">📝</span>
+            Данни за продукта
+          </h2>
+
+          <form id="product-form" class="product-form" novalidate>
+
+            <!-- Product name -->
+            <div class="form-group">
+              <label class="form-label" for="product-name">
+                Име на продукта <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input
+                id="product-name"
+                name="productName"
+                type="text"
+                class="form-control"
+                placeholder="напр. Безжични слушалки ProSound X3"
+                maxlength="120"
+                required
+                aria-required="true"
+                autocomplete="off"
+              />
+              <span class="field-hint">Въведи точното търговско наименование.</span>
+            </div>
+
+            <!-- Category -->
+            <div class="form-group">
+              <label class="form-label" for="product-category">
+                Категория <span class="required" aria-hidden="true">*</span>
+              </label>
+              <div class="select-wrapper">
+                <select
+                  id="product-category"
+                  name="productCategory"
+                  class="form-control form-select"
+                  required
+                  aria-required="true"
+                >
+                  <option value="" disabled selected>— Избери категория —</option>
+                  <optgroup label="Електроника">
+                    <option value="electronics-audio">Аудио</option>
+                    <option value="electronics-phones">Телефони</option>
+                    <option value="electronics-computers">Компютри</option>
+                    <option value="electronics-accessories">Аксесоари</option>
+                  </optgroup>
+                  <optgroup label="Дом и градина">
+                    <option value="home-furniture">Мебели</option>
+                    <option value="home-decor">Декорация</option>
+                    <option value="home-garden">Градина</option>
+                  </optgroup>
+                  <optgroup label="Мода">
+                    <option value="fashion-clothing">Облекло</option>
+                    <option value="fashion-shoes">Обувки</option>
+                    <option value="fashion-accessories">Аксесоари</option>
+                  </optgroup>
+                  <optgroup label="Красота и здраве">
+                    <option value="beauty-skincare">Грижа за кожата</option>
+                    <option value="beauty-makeup">Грим</option>
+                    <option value="health-supplements">Добавки</option>
+                  </optgroup>
+                  <optgroup label="Спорт">
+                    <option value="sports-equipment">Оборудване</option>
+                    <option value="sports-clothing">Спортно облекло</option>
+                  </optgroup>
+                  <option value="other">Друго</option>
+                </select>
+                <span class="select-arrow" aria-hidden="true">▾</span>
+              </div>
+            </div>
+
+            <!-- Key characteristics -->
+            <div class="form-group">
+              <label class="form-label" for="product-features">
+                Ключови характеристики <span class="required" aria-hidden="true">*</span>
+              </label>
+              <textarea
+                id="product-features"
+                name="productFeatures"
+                class="form-control form-textarea"
+                rows="5"
+                placeholder="напр.&#10;- Активно шумопотискане (ANC)&#10;- 30 часа автономност&#10;- Bluetooth 5.3&#10;- Сгъваема конструкция&#10;- USB-C зареждане"
+                maxlength="1000"
+                required
+                aria-required="true"
+              ></textarea>
+              <div class="textarea-footer">
+                <span class="field-hint">Всяка характеристика на нов ред или разделена с тире.</span>
+                <span class="char-counter" id="features-counter" aria-live="polite">0 / 1000</span>
+              </div>
+            </div>
+
+            <!-- Tone selector -->
+            <div class="form-group">
+              <label class="form-label" for="product-tone">
+                Желан тон на комуникация <span class="required" aria-hidden="true">*</span>
+              </label>
+              <div class="tone-options" role="radiogroup" aria-labelledby="tone-label">
+                <span id="tone-label" class="sr-only">Избери тон на комуникация</span>
+
+                <label class="tone-card" id="tone-card-professional">
+                  <input
+                    type="radio"
+                    name="productTone"
+                    value="professional"
+                    id="tone-professional"
+                    class="tone-radio"
+                    checked
+                  />
+                  <span class="tone-icon" aria-hidden="true">🎩</span>
+                  <span class="tone-name">Професионален</span>
+                  <span class="tone-desc">Формален, авторитетен стил</span>
+                </label>
+
+                <label class="tone-card" id="tone-card-friendly">
+                  <input
+                    type="radio"
+                    name="productTone"
+                    value="friendly"
+                    id="tone-friendly"
+                    class="tone-radio"
+                  />
+                  <span class="tone-icon" aria-hidden="true">😊</span>
+                  <span class="tone-name">Приятелски</span>
+                  <span class="tone-desc">Топъл, разговорен стил</span>
+                </label>
+
+                <label class="tone-card" id="tone-card-sales">
+                  <input
+                    type="radio"
+                    name="productTone"
+                    value="sales"
+                    id="tone-sales"
+                    class="tone-radio"
+                  />
+                  <span class="tone-icon" aria-hidden="true">🚀</span>
+                  <span class="tone-name">Продажбен</span>
+                  <span class="tone-desc">Убедителен, ориентиран към действие</span>
+                </label>
+              </div>
+              <!-- Hidden select as fallback value carrier -->
+              <select
+                id="product-tone"
+                name="productTone"
+                class="sr-only"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <option value="professional">Професионален</option>
+                <option value="friendly">Приятелски</option>
+                <option value="sales">Продажбен</option>
+              </select>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-actions">
+              <button
+                id="generate-btn"
+                type="submit"
+                class="btn btn-primary btn-generate"
+                aria-label="Генерирай продуктово описание"
+              >
+                <span class="btn-icon" aria-hidden="true">✦</span>
+                Генерирай описание
+              </button>
+              <button
+                id="reset-btn"
+                type="reset"
+                class="btn btn-ghost"
+                aria-label="Изчисти формата"
+              >
+                Изчисти
+              </button>
+            </div>
+
+          </form>
+        </section>
+
+        <!-- Results section placeholder — will be built in Task 02 -->
+        <section id="results-section" class="results-section" hidden aria-live="polite">
+          <!-- Task 02: results will be rendered here -->
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="app-footer">
+      <div class="container">
+        <p class="footer-text">
+          DescribeAI &mdash; AI генератор на продуктови описания &copy; 2025
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="scripts/main.js"></script>
+  </body>
+</html>
