@@ -1,6 +1,7 @@
 /**
  * history.js — Manage saved descriptions via localStorage and Sidebar UI
  */
+import { showToast } from './notifications.js';
 
 const HISTORY_KEY = 'describeai_history';
 
@@ -172,6 +173,8 @@ function executeDelete() {
   
   // Inform the rest of the application that an item was deleted
   document.dispatchEvent(new CustomEvent('history:deleted', { detail: { id: itemToDeleteId } }));
+  
+  showToast('Продуктът е изтрит.', 'info');
   
   closeConfirmModal();
   renderHistory();

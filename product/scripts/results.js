@@ -5,6 +5,7 @@
 import { setGenerateDisabled } from './form.js';
 import { generateDescription } from './api.js';
 import { saveToHistory } from './history.js';
+import { showToast } from './notifications.js';
 
 // ─── Module state ─────────────────────────────────────────────────────────────
 
@@ -99,8 +100,12 @@ async function _handleGenerateEvent(event) {
       currentProductData = formData;
     }
     _renderResults(results);
+    showToast('Успешно генериране!', 'success');
   } catch (error) {
     _showError(error.message);
+    showToast(error.message, 'error');
+  } finally {
+    setGenerateDisabled(false);
   }
 }
 
@@ -135,7 +140,7 @@ function _showError(msg) {
   errorMessage.textContent = msg;
   errorState.hidden = false;
   
-  setGenerateDisabled(false);
+  // setGenerateDisabled(false) is now handled in finally block of _handleGenerateEvent
 }
 
 function _renderResults({ short, long, bullets }) {
@@ -147,7 +152,7 @@ function _renderResults({ short, long, bullets }) {
   errorState.hidden = true;
   generatedResults.hidden = false;
 
-  setGenerateDisabled(false);
+  // setGenerateDisabled(false) is now handled in finally block of _handleGenerateEvent
 }
 
 /**
@@ -164,18 +169,9 @@ async function _handleCopy(event) {
 
   try {
     await navigator.clipboard.writeText(textToCopy);
-    
-    const originalText = btn.textContent;
-    btn.textContent = 'Копирано ✓';
-    btn.style.color = 'var(--color-success)';
-    
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.style.color = '';
-    }, 2000);
+    showToast('Копирано в клипборда!', 'success');
   } catch (err) {
-    btn.textContent = 'Грешка';
-    setTimeout(() => btn.textContent = 'Копирай', 2000);
+    showToast('Грешка при копиране', 'error');
   }
 }
 
