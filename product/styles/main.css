@@ -1012,3 +1012,66 @@ html, body {
   overflow-x: hidden;
   position: relative;
 }
+
+/* ============================================================
+   LANGUAGE TOGGLE (Task 11)
+   ============================================================ */
+.lang-toggle {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.lang-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.lang-option:hover {
+  border-color: var(--color-border-focus);
+  color: var(--color-text-primary);
+  background: var(--color-surface-hover);
+}
+
+.lang-radio {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lang-radio:checked + span {
+  /* will be targeted via parent */
+}
+
+.lang-option:has(.lang-radio:checked) {
+  border-color: var(--color-accent-from);
+  background: hsl(252, 80%, 68% / 0.12);
+  color: var(--color-text-primary);
+}
+
+.lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--color-surface-hover);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  vertical-align: middle;
+  line-height: 1.4;
+}

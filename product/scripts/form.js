@@ -53,6 +53,7 @@ export function initForm() {
   _bindElements();
   _bindEvents();
   _syncCharCounter(); // initialise counter display
+  _restoreLanguage(); // Task 11: restore last used language
 }
 
 /**
@@ -69,12 +70,16 @@ export function getFormData() {
     productCategoryText = categorySelect.options[categorySelect.selectedIndex].text;
   }
 
+  const langChecked = form.querySelector('.lang-radio:checked');
+  const productLanguage = langChecked ? langChecked.value : 'bg';
+
   return {
     productName:         (data.get('productName')     ?? '').trim(),
     productCategory:     (data.get('productCategory') ?? '').trim(),
     productCategoryText: productCategoryText,
     productFeatures:     (data.get('productFeatures') ?? '').trim(),
     productTone:         _getSelectedTone(),
+    productLanguage:     productLanguage,
   };
 }
 
@@ -122,6 +127,13 @@ function _bindEvents() {
 
   // Task 09: Listen for history load to restore form fields
   document.addEventListener('history:load', _handleHistoryLoad);
+
+  // Task 11: Persist language selection
+  form.querySelectorAll('.lang-radio').forEach(radio => {
+    radio.addEventListener('change', () => {
+      localStorage.setItem('describeai_language', radio.value);
+    });
+  });
 }
 
 /**
@@ -149,6 +161,11 @@ function _handleHistoryLoad(event) {
   const hiddenSelect = document.getElementById('product-tone');
   if (hiddenSelect) hiddenSelect.value = tone;
 
+  // Task 11: Restore language selection
+  const lang = data.productLanguage || 'bg';
+  const langRadio = form.querySelector(`.lang-radio[value="${lang}"]`);
+  if (langRadio) langRadio.checked = true;
+
   // Sync character counter
   _syncCharCounter();
   
@@ -158,6 +175,13 @@ function _handleHistoryLoad(event) {
     el.removeAttribute('aria-invalid');
     el.removeAttribute('aria-describedby');
   });
+}
+
+/** Restore language from localStorage on page load */
+function _restoreLanguage() {
+  const saved = localStorage.getItem('describeai_language') || 'bg';
+  const radio = form ? form.querySelector(`.lang-radio[value="${saved}"]`) : null;
+  if (radio) radio.checked = true;
 }
 
 /** Sync the character counter badge below the textarea */

@@ -17,31 +17,45 @@ export async function generateDescription(productData) {
     throw new Error('Моля, въведете Google Gemini API ключ от настройките (горе вдясно).');
   }
 
-  // Map the tone to Bulgarian instruction
-  const toneMap = {
+  // Map the tone to instruction based on language
+  const toneMapBG = {
     'professional': 'строго професионален, авторитетен и формален',
     'friendly': 'приятелски, топъл и разговорен',
     'sales': 'силно убедителен, продажбен и фокусиран върху ползите (call to action)'
   };
+  const toneMapEN = {
+    'professional': 'strictly professional, authoritative and formal',
+    'friendly': 'friendly, warm and conversational',
+    'sales': 'highly persuasive, sales-focused and benefit-driven (call to action)'
+  };
+
+  const isEnglish = productData.productLanguage === 'en';
+  const toneMap = isEnglish ? toneMapEN : toneMapBG;
   const targetTone = toneMap[productData.productTone] || toneMap['professional'];
 
-  const prompt = `
-Аз съм маркетинг специалист за онлайн магазин. Имам нужда от висококачествени описания на български език за следния продукт:
+  const langInstruction = isEnglish
+    ? 'You MUST write ALL output text exclusively in English. This is mandatory, regardless of the language of the input data.'
+    : 'Трябва да пишеш ЦЕЛИЯ изходен текст изключително на БЪЛГАРСКИ ЕЗИК. Входните данни могат да са на различен език, но изходът задължително е на български.';
 
-Име: ${productData.productName}
-Категория: ${productData.productCategory}
-Ключови характеристики:
+  const prompt = `
+${langInstruction}
+
+You are a marketing specialist for an online store. Generate high-quality product descriptions for the following product:
+
+Product name: ${productData.productName}
+Category: ${productData.productCategory}
+Key features:
 ${productData.productFeatures}
 
-Задължително изискване: Тонът на комуникация трябва да бъде ${targetTone}.
+Mandatory requirement: The communication tone must be ${targetTone}.
 
-Трябва да генерираш следните три компонента:
-1. shortDescription: Много кратко въвеждащо описание (максимум 2 кратки изречения), което грабва вниманието.
-2. longDescription: Подробно и завладяващо описание (2-3 нормални абзаца), което обяснява ползите и решава проблеми на клиента.
-3. keyFeatures: Точно 3 до 4 кратки ключови акцента, форматирани като валиден HTML списък. Започни с <ul> и сложи всеки акцент в <li> таг. Не слагай Markdown символи за списък (като - или *), използвай само HTML.
+Generate the following three components:
+1. shortDescription: A very short introductory description (maximum 2 short sentences) that grabs attention.
+2. longDescription: A detailed and engaging description (2-3 paragraphs) that explains the benefits and solves customer problems.
+3. keyFeatures: Exactly 3 to 4 short key highlights, formatted as valid HTML list. Start with <ul> and put each highlight in a <li> tag. Do not use Markdown list symbols (like - or *), use only HTML.
 
-Отговори ЗАДЪЛЖИТЕЛНО и САМО със стриктен JSON обект със следните три ключа: "shortDescription", "longDescription", "keyFeatures".
-Никакъв друг текст преди или след JSON обекта!
+Respond ONLY with a strict JSON object with these three keys: "shortDescription", "longDescription", "keyFeatures".
+No other text before or after the JSON object!
 `;
 
   const requestBody = {

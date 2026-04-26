@@ -114,6 +114,12 @@ function renderHistory() {
 
     const el = document.createElement('div');
     el.className = 'history-item';
+
+    // Task 11: Show language badge
+    const langBadge = item.formData.productLanguage === 'en'
+      ? '<span class="lang-badge">🇬🇧 EN</span>'
+      : '<span class="lang-badge">🇧🇬 БГ</span>';
+
     el.innerHTML = `
       <div class="history-item-header">
         <div class="history-item-title">${item.formData.productName || 'Без име'}</div>
@@ -122,7 +128,7 @@ function renderHistory() {
         </button>
       </div>
       <div class="history-item-meta">
-        <span>${categoryDisplay}</span>
+        <span>${categoryDisplay} ${langBadge}</span>
         <span>${dateString}</span>
       </div>
     `;
