@@ -97,10 +97,17 @@ function renderHistory() {
     
     // Convert tone value to something readable if we want, or just category
     // We'll map the category to text if it matches our options, or just show the value
-    let categoryDisplay = item.formData.productCategory;
-    if (categoryDisplay.includes('-')) {
-       // just rough formatting for the dummy categories like 'electronics-audio'
-       categoryDisplay = categoryDisplay.split('-')[1] || categoryDisplay;
+    // Use the stored Bulgarian text if available (Task 09), otherwise fallback to the value
+    let categoryDisplay = item.formData.productCategoryText || item.formData.productCategory || 'Друго';
+    
+    // Task 09: Clean up the category display
+    // 1. If it's a path like "Group -> Category", take only the last part
+    if (categoryDisplay.includes('->')) {
+       categoryDisplay = categoryDisplay.split('->').pop().trim();
+    }
+    // 2. Fallback for older items with English slugs like "electronics-audio"
+    else if (!item.formData.productCategoryText && categoryDisplay.includes('-')) {
+       categoryDisplay = categoryDisplay.split('-').pop();
        categoryDisplay = categoryDisplay.charAt(0).toUpperCase() + categoryDisplay.slice(1);
     }
 

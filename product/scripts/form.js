@@ -62,11 +62,19 @@ export function initForm() {
  */
 export function getFormData() {
   const data = new FormData(form);
+  const categorySelect = document.getElementById('product-category');
+  let productCategoryText = '';
+
+  if (categorySelect && categorySelect.selectedIndex > 0) {
+    productCategoryText = categorySelect.options[categorySelect.selectedIndex].text;
+  }
+
   return {
-    productName:     (data.get('productName')     ?? '').trim(),
-    productCategory: (data.get('productCategory') ?? '').trim(),
-    productFeatures: (data.get('productFeatures') ?? '').trim(),
-    productTone:     _getSelectedTone(),
+    productName:         (data.get('productName')     ?? '').trim(),
+    productCategory:     (data.get('productCategory') ?? '').trim(),
+    productCategoryText: productCategoryText,
+    productFeatures:     (data.get('productFeatures') ?? '').trim(),
+    productTone:         _getSelectedTone(),
   };
 }
 
@@ -110,6 +118,45 @@ function _bindEvents() {
   // Inline validation on blur
   form.querySelectorAll('.form-control').forEach((el) => {
     el.addEventListener('blur', () => _validateField(el));
+  });
+
+  // Task 09: Listen for history load to restore form fields
+  document.addEventListener('history:load', _handleHistoryLoad);
+}
+
+/**
+ * Restore form fields from history item
+ */
+function _handleHistoryLoad(event) {
+  const item = event.detail;
+  const data = item.formData;
+
+  if (!data) return;
+
+  // Set basic inputs
+  form.productName.value = data.productName || '';
+  form.productCategory.value = data.productCategory || '';
+  featuresTextarea.value = data.productFeatures || '';
+
+  // Handle tone selection
+  const tone = data.productTone || 'professional';
+  const radio = form.querySelector(`.tone-radio[value="${tone}"]`);
+  if (radio) {
+    radio.checked = true;
+  }
+  
+  // Also sync the hidden select for consistency
+  const hiddenSelect = document.getElementById('product-tone');
+  if (hiddenSelect) hiddenSelect.value = tone;
+
+  // Sync character counter
+  _syncCharCounter();
+  
+  // Clear any existing validation errors
+  form.querySelectorAll('.field-error').forEach(el => el.remove());
+  form.querySelectorAll('[aria-invalid]').forEach(el => {
+    el.removeAttribute('aria-invalid');
+    el.removeAttribute('aria-describedby');
   });
 }
 

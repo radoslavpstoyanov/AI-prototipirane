@@ -27,6 +27,7 @@ let resultLong;
 let resultBullets;
 
 let currentLoadedId = null;
+let currentProductData = null;
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
@@ -57,6 +58,11 @@ function _bindEvents() {
   document.querySelectorAll('.btn-copy').forEach(btn => {
     btn.addEventListener('click', _handleCopy);
   });
+
+  const downloadBtn = document.getElementById('download-txt-btn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', _handleDownload);
+  }
 }
 
 /**
@@ -65,6 +71,7 @@ function _bindEvents() {
 function _handleHistoryLoad(event) {
   const item = event.detail;
   currentLoadedId = item.id;
+  currentProductData = item.formData;
   
   // Make sure the main section container is visible
   resultsSection.hidden = false;
@@ -89,6 +96,7 @@ async function _handleGenerateEvent(event) {
     const savedItem = saveToHistory(formData, results); // Task 04: Save to local storage
     if (savedItem) {
       currentLoadedId = savedItem.id;
+      currentProductData = formData;
     }
     _renderResults(results);
   } catch (error) {
@@ -169,4 +177,70 @@ async function _handleCopy(event) {
     btn.textContent = 'Грешка';
     setTimeout(() => btn.textContent = 'Копирай', 2000);
   }
+}
+
+/**
+ * Handle exporting descriptions to a .txt file
+ */
+function _handleDownload() {
+  if (!currentProductData) return;
+
+  const rawName = currentProductData.productName || 'продукт';
+  
+  // Use the name exactly as entered by the user
+  const formattedName = rawName;
+  
+  // Format category name (use the human-readable text from form data OR get it from the form if loading from old history)
+  let formattedCategory = currentProductData.productCategoryText;
+  
+  if (!formattedCategory) {
+    const categorySelect = document.getElementById('product-category');
+    if (categorySelect && categorySelect.selectedIndex > 0) {
+      formattedCategory = categorySelect.options[categorySelect.selectedIndex].text;
+    }
+  }
+  
+  formattedCategory = formattedCategory || 'Друго';
+  
+  const dateStr = new Date().toLocaleDateString('bg-BG');
+
+  const content = `Име на продукт: ${formattedName}
+Категория: ${formattedCategory}
+Дата: ${dateStr}
+
+Кратко описание
+${resultShort.innerText}
+
+Подробно описание
+${resultLong.innerText}
+
+Основни акценти
+${resultBullets.innerText}
+
+Генерирано с DescribeAI
+`;
+
+  // Filename sanitization - keep user's original casing but remove forbidden filesystem characters
+  const safeName = rawName
+    .replace(/[<>:"/\\|?*]/g, '') // Remove forbidden chars
+    .trim()
+    .slice(0, 80);                // Slightly longer limit for original names
+    
+  const filename = `${safeName || 'opisanie'}.txt`;
+
+  // Create blob with UTF-8 encoding
+  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  
+  // Trigger download
+  document.body.appendChild(link);
+  link.click();
+  
+  // Cleanup
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
